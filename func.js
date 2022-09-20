@@ -68,7 +68,7 @@ fdk.handle(async function(input, ctx){
   }
 
   if ((method === 'PUT') && id ){
-    return updateRecord (tablename, id,  body);
+    return updateRecord (tableName, id,  body);
   }
   
   return showAll;
