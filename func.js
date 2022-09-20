@@ -47,6 +47,10 @@ fdk.handle(async function(input, ctx){
     client = createClientResource();
   }
 
+  if ((method === 'GET') && !tableName){
+    return showAll();
+  }
+
   if ((method === 'GET') && descTable){
     return describeTable(tableName);
   }
@@ -70,9 +74,8 @@ fdk.handle(async function(input, ctx){
   if ((method === 'PUT') && id ){
     return updateRecord (tableName, id,  body);
   }
-  
-  return showAll;
 
+  return showAll();
 }, {});
 
 
@@ -96,8 +99,8 @@ async function describeTable (tablename) {
    try {
       let resExistingTab = await client.getTable(tablename);
       await client.forCompletion(resExistingTab);
-      return resExistingTab
-    } catch (err){
+      return Object.assign(resExistingTab, { "schema": JSON.parse(resExistingTab.schema)});
+   } catch (err){
         console.error('failed to show tables', err);
         return { error: err };
     } finally {
@@ -119,6 +122,7 @@ async function createRecord (tablename, record) {
 // Update a record in the table tablename
 async function updateRecord (tablename, id,  record) {
     try {
+        // const result = await client.putIfPresent(tablename, Object.assign(record, {id}) );
         const result = await client.putIfPresent(tablename, {id, record} );
         return { result: result};
     } catch (err) {
