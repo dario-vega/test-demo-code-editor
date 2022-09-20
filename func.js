@@ -37,7 +37,7 @@ fdk.handle(async function(input, ctx){
         var q = url.parse(adr, true);
         tableName = q.pathname.split('/')[2]
         id = q.pathname.split('/')[3]
-        if (id && id == 'desc')
+        if (id && id === 'desc')
            descTable=true;
         method = hctx.method
         body = ctx.body
@@ -46,37 +46,34 @@ fdk.handle(async function(input, ctx){
   if ( !client ) {
     client = createClientResource();
   }
-  
-  if ((method = 'GET') && descTable){
-    return descTable(tableName);
+
+  if ((method === 'GET') && descTable){
+    return describeTable(tableName);
   }
-  
-  if ((method = 'GET') && id && !descTable){
+
+  if ((method === 'GET') && id && !descTable){
     return getRecord(tableName, id);
   }
 
-  if ((method = 'GET') && !id){
+  if ((method === 'GET') && !id){
     return getAllRecords(tableName, q);
   }
 
-  if ((method = 'POST') && !id){
+  if ((method === 'POST') && !id){
     return createRecord(tableName, body);
   }
-  
-  if ((method = 'DELETE') ){
+
+  if ((method === 'DELETE') ){
     return deleteRecord(tableName, id)
-  }  
-
-
-  rows = getAllRecords(tableName, q);
-
-  return rows;
+  }
+  
+  return {"error": "unkonwn"};
 
 }, {});
 
 // Show the structure of the table tablename
 
-async function descTable (tablename) {
+async function describeTable (tablename) {
    try {
       let resExistingTab = await client.getTable(tablename);
       await client.forCompletion(resExistingTab);
@@ -93,7 +90,7 @@ async function descTable (tablename) {
 async function createRecord (tablename, record) {
     try {
         const result = await client.put(tablename, record, {exactMatch:true} );
-        res.json({ result: result});
+        return { result: result};
     } catch (err) {
         console.error('failed to insert data', err);
         return { error: err };
@@ -105,7 +102,7 @@ async function createRecord (tablename, record) {
 async function getRecord (tablename, id) {
     try {
         const result = await client.get(tablename, { id })
-        res.json(result.row);
+        return result.row;
     } catch (err) {
         console.error('failed to get data', err);
         return { error: err };
@@ -117,7 +114,7 @@ async function getRecord (tablename, id) {
 async function deleteRecord (tablename, id) {
     try {
         const result = await client.delete(tablename, { id });
-        res.json({ result: result});
+        return { result: result};
     } catch (err) {
         console.error('failed to delete data', err);
         return { error: err };
@@ -128,11 +125,14 @@ async function deleteRecord (tablename, id) {
 async function getAllRecords (tablename, req) {
     let statement = "SELECT * FROM " + tablename;
     let offset;
+    let page;
+    let limit;
+    let orderby;
 
     if (req && req.query ) {
-    const page = parseInt(req.query.page);
-    const limit = parseInt(req.query.limit);
-    const orderby = req.query.orderby;
+      page = parseInt(req.query.page);
+      limit = parseInt(req.query.limit);
+      orderby = req.query.orderby;
     }
 
     if (orderby )
