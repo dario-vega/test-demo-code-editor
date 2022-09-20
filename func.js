@@ -25,6 +25,10 @@ fdk.handle(async function(input, ctx){
   // Reading parameters from standard input for TEST purposes
   if (input && input.tableName)
     tableName = input.tableName;
+  if (input) {
+    method = 'GET';
+  }
+  
 
   // Reading parameters sent by the httpGateway
   let hctx = ctx.httpGateway
@@ -43,6 +47,27 @@ fdk.handle(async function(input, ctx){
     client = createClientResource();
   }
   
+  if ((method = 'GET') && descTable){
+    return descTable(tableName);
+  }
+  
+  if ((method = 'GET') && id && !descTable){
+    return getRecord(tableName, id);
+  }
+
+  if ((method = 'GET') && !id){
+    return getAllRecords(tableName, q);
+  }
+
+  if ((method = 'POST') && !id){
+    return createRecord(tableName, body);
+  }
+  
+  if ((method = 'DELETE') ){
+    return deleteRecord(tableName, id)
+  }  
+
+
   rows = getAllRecords(tableName, q);
 
   return rows;
@@ -61,7 +86,7 @@ async function descTable (tablename) {
         return { error: err };
     } finally {
     }
-  });
+}
 
 
 // Create a new record in the table tablename
@@ -73,7 +98,7 @@ async function createRecord (tablename, record) {
         console.error('failed to insert data', err);
         return { error: err };
     }
-});
+}
 
 // Get a record from the table tablename by id
 // Currently the id is hardcoded as key of the table
@@ -85,7 +110,7 @@ async function getRecord (tablename, id) {
         console.error('failed to get data', err);
         return { error: err };
     }
-});
+}
 
 // Delete a record from the table tablename by id
 // Currently the id is hardcoded as key of the table
@@ -97,33 +122,32 @@ async function deleteRecord (tablename, id) {
         console.error('failed to delete data', err);
         return { error: err };
     }
-});
+}
 
 // Get all records for the table tablename
 async function getAllRecords (tablename, req) {
     let statement = "SELECT * FROM " + tablename;
-    const rows = [];
     let offset;
 
+    if (req && req.query ) {
     const page = parseInt(req.query.page);
     const limit = parseInt(req.query.limit);
     const orderby = req.query.orderby;
-    if (page)
-      console.log (page)
+    }
+
     if (orderby )
       statement = statement + " ORDER BY " + orderby;
     if (limit)
       statement = statement + " LIMIT " + limit;
-    if (page) {
+    if (page && limit) {
       offset = page*limit;
       statement = statement + " OFFSET " + offset;
     }
 
-    console.log (statement)  
-    executeQuery (statement)
+    console.log (statement)
+    return executeQuery (statement)
 
-  });
-
+}
 
 async function executeQuery (statement) {
   const rows = [];
