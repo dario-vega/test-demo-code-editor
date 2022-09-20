@@ -31,7 +31,14 @@ fdk.handle(async function(input, ctx){
         var q = url.parse(adr, true);
         tableName = q.pathname.split('/')[2]
   }
+  //retrieving the request headers
+  headers = ctx.Headers
+  config  = ctx.Config
+  method = ctx.Method
+  
+  return ctx;
 
+  
   if ( !client ) {
     client = createClientResource();
   }
