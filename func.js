@@ -66,10 +66,29 @@ fdk.handle(async function(input, ctx){
   if ((method === 'DELETE') ){
     return deleteRecord(tableName, id)
   }
+
+  if ((method === 'PUT') && id ){
+    return updateRecord (tablename, id,  body);
+  }
   
-  return {"error": "unkonwn"};
+  return showAll;
 
 }, {});
+
+
+// Show all tables
+
+async function showAll () {
+
+    try {
+      let varListTablesResult = await client.listTables();
+      return varListTablesResult;
+    } catch (err){
+        console.error('failed to show tables', err);
+        return { error: err };
+    } finally {
+    }
+}
 
 // Show the structure of the table tablename
 
@@ -90,6 +109,17 @@ async function describeTable (tablename) {
 async function createRecord (tablename, record) {
     try {
         const result = await client.put(tablename, record, {exactMatch:true} );
+        return { result: result};
+    } catch (err) {
+        console.error('failed to insert data', err);
+        return { error: err };
+    }
+}
+
+// Update a record in the table tablename
+async function updateRecord (tablename, id,  record) {
+    try {
+        const result = await client.putIfPresent(tablename, {id, record} );
         return { result: result};
     } catch (err) {
         console.error('failed to insert data', err);
