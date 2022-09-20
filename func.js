@@ -102,7 +102,10 @@ async function createRecord (tablename, record) {
 async function getRecord (tablename, id) {
     try {
         const result = await client.get(tablename, { id })
-        return result.row;
+        if (result.row)
+          return result.row;
+        else
+          return {}
     } catch (err) {
         console.error('failed to get data', err);
         return { error: err };
@@ -128,6 +131,7 @@ async function getAllRecords (tablename, req) {
     let page;
     let limit;
     let orderby;
+    let result;
 
     if (req && req.query ) {
       page = parseInt(req.query.page);
@@ -145,7 +149,11 @@ async function getAllRecords (tablename, req) {
     }
 
     console.log (statement)
-    return executeQuery (statement)
+    result =executeQuery (statement)
+    if (result)
+      return result;
+    else
+      return {}
 
 }
 
