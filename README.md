@@ -81,13 +81,16 @@ in the application created earlier:
 COMP_ID="<your_cmpid>"
 fn config app  <app-name> NOSQL_COMPARTMENT_ID $COMP_ID
 fn config app  <app-name> NOSQL_REGION $OCI_REGION
+fn config app  <app-name> FN_API_KEY <API key value>
+
 ```
 
 e.g.
 ```
-COMP_ID="ocid1.compartment.oc1..aaaaaxxxxx"
+COMP_ID=`oci iam compartment list --all --name  demonosql | jq -r '."data"[].id'`
 fn config app  myapp NOSQL_COMPARTMENT_ID $COMP_ID
 fn config app  myapp NOSQL_REGION $OCI_REGION
+fn config app  myapp FN_API_KEY "MY_FN_API_KEY_VALUE" 
 ```
 
 
