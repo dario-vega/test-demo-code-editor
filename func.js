@@ -137,8 +137,7 @@ async function createRecord (tablename, record) {
 // Update a record in the table tablename
 async function updateRecord (tablename, id,  record) {
     try {
-        // const result = await client.putIfPresent(tablename, Object.assign(record, {id}) );
-        const result = await client.putIfPresent(tablename, {id, record} );
+        const result = await client.putIfPresent(tablename, Object.assign(record, {id}) );
         return { result: result};
     } catch (err) {
         console.error('failed to insert data', err);
