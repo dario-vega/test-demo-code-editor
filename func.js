@@ -18,19 +18,25 @@ process.on('exit', function(code) {
 
 fdk.handle(async function(input, ctx){
 
+  const apiKey=process.env.FN_API_KEY  || "DEFAULT_FN_API_KEY";
+  let   apiKeyHeader;
+
   let tableName;
   let id;
   let descTable=false;
 
   // Reading parameters from standard input for TEST purposes
+  // using invoke allows only to execute  getAllRecords
   if (input && input.tableName)
     tableName = input.tableName;
   if (input) {
     method = 'GET';
+    apiKeyHeader = [apiKey]
   }
-  
+
 
   // Reading parameters sent by the httpGateway
+  // When an API Gateway is configured, you can execute all the defined actions
   let hctx = ctx.httpGateway
   if (hctx  && hctx.requestURL) {
         var adr = hctx.requestURL;
@@ -41,7 +47,16 @@ fdk.handle(async function(input, ctx){
            descTable=true;
         method = hctx.method
         body = ctx.body
+        apiKeyHeader = hctx.headers["X-Api"]
   }
+
+  // Validating apiKey
+  if (! (apiKeyHeader.includes(apiKey))) {
+    hctx.statusCode = 401
+    return {"Api Key Validation":false}
+  }
+
+  // API Implementation
   
   if ( !client ) {
     client = createClientResource();
