@@ -51,9 +51,13 @@ fdk.handle(async function(input, ctx){
   }
 
   // Validating apiKey
-  if (! (apiKeyHeader.includes(apiKey))) {
+  if (! (apiKeyHeader)) {
     hctx.statusCode = 401
-    return {"Api Key Validation":false}
+    return {"Api Key Validation":false, comment:"noApiKeyHeader"}
+  }
+  else if (! (apiKeyHeader.includes(apiKey))) {
+    hctx.statusCode = 401
+    return {"Api Key Validation":false, debug:apiKeyHeader}
   }
 
   // API Implementation
