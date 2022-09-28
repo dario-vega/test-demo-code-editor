@@ -18,7 +18,7 @@ process.on('exit', function(code) {
 
 fdk.handle(async function(input, ctx){
 
-  const apiKey=process.env.FN_API_KEY  || "DEFAULT_FN_API_KEY";
+  const apiKey=process.env.FN_API_KEY;
   let   apiKeyHeader;
 
   let tableName;
@@ -47,17 +47,19 @@ fdk.handle(async function(input, ctx){
            descTable=true;
         method = hctx.method
         body = ctx.body
-        apiKeyHeader = hctx.headers["X-Api"]
+        apiKeyHeader = hctx.headers["X-Api-Key"]
   }
 
-  // Validating apiKey
-  if (! (apiKeyHeader)) {
-    hctx.statusCode = 401
-    return {"Api Key Validation":false, comment:"noApiKeyHeader"}
-  }
-  else if (! (apiKeyHeader.includes(apiKey))) {
-    hctx.statusCode = 401
-    return {"Api Key Validation":false, debug:apiKeyHeader}
+  // Validating apiKey - only if FN_API_KEY was configured at application/function level 
+  if (apiKey) {
+    if (! (apiKeyHeader)) {
+      hctx.statusCode = 401
+      return {"Api Key Validation":false, comment:"noApiKeyHeader"}
+    }
+    else if (! (apiKeyHeader.includes(apiKey))) {
+      hctx.statusCode = 401
+      return {"Api Key Validation":false, debug:apiKeyHeader}
+    }
   }
 
   // API Implementation
