@@ -51,7 +51,7 @@ fdk.handle(async function(input, ctx){
         method = hctx.method
         body = ctx.body
         apiKeyHeader = hctx.headers["X-Api-Key"]
-        if (hctx.headers["X-Scope"]) {
+        if (hctx.headers["X-Scope"]) 
            authScope.push(...hctx.headers["X-Scope"])    
   }
 
