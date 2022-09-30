@@ -19,7 +19,10 @@ process.on('exit', function(code) {
 fdk.handle(async function(input, ctx){
 
   const apiKey=process.env.FN_API_KEY;
+  const scopeRead ="read"
+  const scopeWrite="write"
   let   apiKeyHeader;
+  let   authScope = [];
 
   let tableName;
   let id;
@@ -48,6 +51,8 @@ fdk.handle(async function(input, ctx){
         method = hctx.method
         body = ctx.body
         apiKeyHeader = hctx.headers["X-Api-Key"]
+        if (hctx.headers["X-Scope"]) {
+           authScope.push(...hctx.headers["X-Scope"])    
   }
 
   // Validating apiKey - only if FN_API_KEY was configured at application/function level 
@@ -60,6 +65,16 @@ fdk.handle(async function(input, ctx){
       hctx.statusCode = 401
       return {"Api Key Validation":false, debug:apiKeyHeader}
     }
+  }
+  if (authScope) {
+     if ( (! (authScope.includes(scopeRead)) ) && method==='GET'){
+       hctx.statusCode = 401
+       return {"Scope Validation":false, debug:authScope}
+     }
+     if ( (! (authScope.includes(scopeWrite)) ) && method!=='GET'){
+       hctx.statusCode = 401
+       return {"Scope Validation":false}
+     }
   }
 
   // API Implementation
