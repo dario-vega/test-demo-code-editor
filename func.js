@@ -66,6 +66,7 @@ fdk.handle(async function(input, ctx){
       return {"Api Key Validation":false, debug:apiKeyHeader}
     }
   }
+  // Validating Scope if it was setup. 
   if (authScope) {
      if ( (! (authScope.includes(scopeRead)) ) && method==='GET'){
        hctx.statusCode = 401
