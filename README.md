@@ -67,7 +67,7 @@ Review the following files in the current folder:
 
 - [package.json](./package.json) specifies all the dependencies for your function
 - [func.yaml](./func.yaml) that contains metadata about your function and declares properties
-- [func.py](./func.py) which is your actual Python function
+- [func.py](./func.js) which is the Node.js function
 
 ## Deploy the function
 
