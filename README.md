@@ -12,7 +12,7 @@ Whenever you see it, it's time for you to perform an action.
 ## Prerequisites
 
 1. Before you deploy this sample function, make sure you have run steps A, B 
-and C of the [Oracle Functions Quick Start Guide for Cloud Shell](https://www.oracle.com/webfolder/technetwork/tutorials/infographics/oci_functions_cloudshell_quickview/functions_quickview_top/functions_quickview/index.html)
+and C of the [Oracle Functions Quick Start Guide for Cloud Shell](https://docs.oracle.com/en-us/iaas/Content/Functions/Tasks/functionsquickstartcloudshell.htm)
     * A - Set up your tenancy
     * B - Create application
     * C - Set up your Cloud Shell dev environment
@@ -67,7 +67,7 @@ Review the following files in the current folder:
 
 - [package.json](./package.json) specifies all the dependencies for your function
 - [func.yaml](./func.yaml) that contains metadata about your function and declares properties
-- [func.py](./func.js) which is the Node.js function
+- [func.js](./func.js) which is the Node.js function
 
 ## Deploy the function
 
