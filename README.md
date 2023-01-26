@@ -34,7 +34,7 @@ In order to use other OCI Services, your function must be part of a dynamic
 group. For information on how to create a dynamic group, refer to the 
 [documentation](https://docs.cloud.oracle.com/iaas/Content/Identity/Tasks/managingdynamicgroups.htm#To).
 
-![user input icon](./images/userinput.png)
+![user input icon](https://github.com/oracle-samples/oracle-functions-samples/blob/master/images/userinput.png)
 
 
 When specifying the *Matching Rules*, we suggest matching all functions in a compartment with:
@@ -48,7 +48,7 @@ ALL {resource.type = 'fnfunc', resource.compartment.id = 'ocid1.compartment.oc1.
 
 Create a new policy that allows the dynamic group to `manage objects` in the functions related compartment.
 
-![user input icon](./images/userinput.png)
+![user input icon](https://github.com/oracle-samples/oracle-functions-samples/blob/master/images/userinput.png)
 
 Your policy should look something like this:
 ```
@@ -75,7 +75,7 @@ In Cloud Shell, run the `fn deploy` command to build the function and its depend
 push the image to the specified Docker registry, and deploy the function to Oracle Functions 
 in the application created earlier:
 
-![user input icon](./images/userinput.png)
+![user input icon](https://github.com/oracle-samples/oracle-functions-samples/blob/master/images/userinput.png)
 
 ```
 COMP_ID="<your_cmpid>"
@@ -106,7 +106,7 @@ fn -v deploy --app myapp
 
 ## Create Nosql Tables
 
-![user input icon](./images/userinput.png)
+![user input icon](https://github.com/oracle-samples/oracle-functions-samples/blob/master/images/userinput.png)
 
 
 ````
@@ -126,7 +126,7 @@ oci nosql row update  --compartment-id "$COMP_ID" --table-name-or-id Tutorial \
 
 ## Test
 
-![user input icon](./images/userinput.png)
+![user input icon](https://github.com/oracle-samples/oracle-functions-samples/blob/master/images/userinput.png)
 ```
 echo -n <JSON-object> | fn invoke <app-name> <function-name>
 ```
