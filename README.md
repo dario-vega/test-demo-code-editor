@@ -1,4 +1,4 @@
-# Function that reads data using the OCI Node.js for Oracle NoSQL Database
+# Function that reads data using the OCI Node.js for Oracle NoSQL Database CS
 
 This function uses Resource Principals to securely authorize a function to make
 API calls to  Oracle NoSQL Database. You can query tables in a compartment 
