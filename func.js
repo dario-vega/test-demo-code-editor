@@ -6,7 +6,7 @@ const ServiceType = require('oracle-nosqldb').ServiceType;
 const url = require('url');
 
 let client;
-let lim = 150;
+let lim = 15;
 
 process.on('exit', function(code) {
   if (client) {
