@@ -3,7 +3,7 @@
 This function uses Resource Principals to securely authorize a function to make
 API calls to  Oracle NoSQL Database. You can query tables in a compartment 
 
-hello-nosql
+hello-nosql-dv
 
 As you make your way through this tutorial, look out for this icon ![user input icon](https://github.com/oracle-samples/oracle-functions-samples/blob/master/images/userinput.png).
 Whenever you see it, it's time for you to perform an action.
